@@ -841,3 +841,165 @@ body {
 
 /* Utilitaires */
 .hidden { display: none !important; }
+/* =========================================
+   CARTE - POLICES RÉDUITES POUR MOBILE
+   ========================================= */
+
+/* Taille de base pour mobile (petit) */
+@media (max-width: 600px) {
+    .love-card {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+    
+    /* En-tête */
+    .card-header {
+        padding: 15px 15px 10px;
+    }
+    
+    .card-photo-container {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 8px;
+    }
+    
+    .photo-placeholder i {
+        font-size: 25px;
+    }
+    
+    .photo-placeholder span {
+        font-size: 10px;
+    }
+    
+    /* Noms BEAUCOUP plus petits */
+    .card-names {
+        font-size: 20px !important;
+        gap: 5px;
+        margin: 5px 0;
+    }
+    
+    .name-author, .name-loved {
+        font-size: 20px !important;
+    }
+    
+    .names-separator {
+        font-size: 22px !important;
+    }
+    
+    /* Date plus petite */
+    .card-date {
+        font-size: 11px;
+        padding: 3px 12px;
+    }
+    
+    /* Corps */
+    .card-body {
+        padding: 12px;
+    }
+    
+    /* Acrostiche - BEAUCOUP plus petit */
+    .acrostiche-title {
+        font-size: 16px !important;
+        margin-bottom: 8px;
+    }
+    
+    .acrostiche-line {
+        gap: 5px;
+        margin-bottom: 4px;
+        padding-bottom: 3px;
+    }
+    
+    .acrostiche-letter {
+        font-size: 16px !important;
+        min-width: 25px;
+    }
+    
+    .acrostiche-phrase {
+        font-size: 11px !important;
+        line-height: 1.3;
+    }
+    
+    /* Message personnel */
+    .personal-message-section {
+        padding: 10px;
+        margin: 12px 0;
+    }
+    
+    .personal-message-title {
+        font-size: 14px !important;
+        margin-bottom: 5px;
+    }
+    
+    .personal-message-content {
+        font-size: 11px !important;
+        line-height: 1.4;
+    }
+    
+    /* Souvenir */
+    .memory-content {
+        padding: 5px 15px;
+        font-size: 11px !important;
+    }
+    
+    .memory-content i {
+        font-size: 10px;
+    }
+    
+    /* Love Love - plus petit */
+    .lovelove-content {
+        padding: 8px 12px;
+        gap: 5px;
+    }
+    
+    .lovelove-icon {
+        font-size: 16px !important;
+    }
+    
+    .lovelove-text {
+        font-size: 12px !important;
+    }
+}
+
+/* Pour les très petits écrans */
+@media (max-width: 400px) {
+    .love-card {
+        max-width: 300px;
+    }
+    
+    .card-names {
+        font-size: 18px !important;
+    }
+    
+    .acrostiche-letter {
+        font-size: 14px !important;
+        min-width: 22px;
+    }
+    
+    .acrostiche-phrase {
+        font-size: 10px !important;
+    }
+    
+    .personal-message-content {
+        font-size: 10px !important;
+    }
+}
+
+/* Pour tablettes (moyen) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .love-card {
+        max-width: 500px;
+    }
+    
+    .card-names {
+        font-size: 28px;
+    }
+    
+    .acrostiche-letter {
+        font-size: 22px;
+    }
+    
+    .acrostiche-phrase {
+        font-size: 15px;
+    }
+}
