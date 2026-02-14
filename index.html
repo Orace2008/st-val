@@ -2,206 +2,289 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lettre d'Amour · Saint-Valentin 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>L'Éternelle Lettre · Saint-Valentin 2026</title>
     
     <!-- Polices -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
-    <!-- Styles -->
+    <!-- Bibliothèques PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Header simple -->
+    <!-- Particules de fond -->
+    <div class="particles" id="particles"></div>
+    <div class="floating-hearts" id="floatingHearts"></div>
+
+    <!-- Header -->
     <header class="header">
-        <div class="logo">
-            <span>❤️</span>
-            <span>Lettre d'Amour</span>
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-icon">💝</span>
+                <span class="logo-text">L'Éternelle Lettre</span>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-heart"></i>
+            </button>
+            <nav class="nav" id="nav">
+                <a href="#why" class="nav-link">Pourquoi célébrer ?</a>
+                <a href="#create" class="nav-link">Créer</a>
+                <a href="#preview" class="nav-link">Aperçu</a>
+            </nav>
         </div>
-        <nav>
-            <a href="#create">Créer</a>
-            <a href="#preview">Aperçu</a>
-        </nav>
     </header>
 
     <main>
-        <!-- Section Pourquoi célébrer (AVANT formulaire) -->
+        <!-- SECTION 1 : POURQUOI CÉLÉBRER -->
         <section class="why-section" id="why">
-            <h2>Pourquoi célébrer le 14 Février ?</h2>
-            <div class="why-cards">
-                <div class="why-card">
-                    <i class="fas fa-heart"></i>
-                    <h3>L'amour sincère</h3>
-                    <p>Exprimer ses sentiments les plus profonds</p>
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Pourquoi célébrer le <span class="accent-text">14 Février</span> ?</h2>
+                    <p class="section-subtitle">L'amour mérite d'être célébré, aujourd'hui plus que jamais</p>
                 </div>
-                <div class="why-card">
-                    <i class="fas fa-clock"></i>
-                    <h3>Un moment unique</h3>
-                    <p>Célébrer votre histoire d'amour</p>
+
+                <div class="why-grid">
+                    <div class="why-card">
+                        <div class="card-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>L'amour sincère</h3>
+                        <p>Le 14 février est l'occasion parfaite pour exprimer vos sentiments les plus profonds.</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="card-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>Un moment suspendu</h3>
+                        <p>Prenez le temps de célébrer votre histoire unique et précieuse.</p>
+                    </div>
+
+                    <div class="why-card">
+                        <div class="card-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <h3>Pour toujours</h3>
+                        <p>Créez un souvenir qui traversera le temps, une lettre éternelle.</p>
+                    </div>
                 </div>
-                <div class="why-card">
-                    <i class="fas fa-infinity"></i>
-                    <h3>Pour toujours</h3>
-                    <p>Créer un souvenir éternel</p>
+
+                <div class="why-message">
+                    <i class="fas fa-quote-left"></i>
+                    <p>Parce que chaque histoire d'amour mérite d'être écrite avec les mots du cœur</p>
+                    <i class="fas fa-quote-right"></i>
                 </div>
             </div>
         </section>
 
-        <!-- Section Formulaire -->
-        <section class="form-section" id="create">
-            <h2>Créez votre lettre</h2>
-            <p>Pour Toni & Baké</p>
-            
-            <form id="loveForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Votre prénom</label>
-                        <input type="text" id="authorName" value="Toni" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Genre</label>
-                        <select id="authorGender">
-                            <option value="homme" selected>Homme</option>
-                            <option value="femme">Femme</option>
-                        </select>
-                    </div>
+        <!-- SECTION 2 : FORMULAIRE ET DOCUMENT -->
+        <section class="creation-section" id="create">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Créez votre lettre</h2>
+                    <p class="section-subtitle">Pour Toni & Baké, pour vous, pour l'amour</p>
                 </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Prénom aimé(e)</label>
-                        <input type="text" id="lovedName" value="Baké" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Genre</label>
-                        <select id="lovedGender">
-                            <option value="homme">Homme</option>
-                            <option value="femme" selected>Femme</option>
-                        </select>
-                    </div>
-                </div>
+                <div class="creation-grid">
+                    <!-- FORMULAIRE -->
+                    <div class="form-container">
+                        <form id="loveForm" class="love-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-user"></i> Votre prénom
+                                    </label>
+                                    <input type="text" id="authorName" class="form-input" value="Toni" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-venus-mars"></i> Genre
+                                    </label>
+                                    <select id="authorGender" class="form-select">
+                                        <option value="homme" selected>Homme</option>
+                                        <option value="femme">Femme</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                <div class="form-group">
-                    <label>Message personnel</label>
-                    <textarea id="deepMessage" rows="3" required>Mon amour pour toi est infini. Chaque jour à tes côtés est un cadeau précieux.</textarea>
-                </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-heart"></i> Prénom aimé(e)
+                                    </label>
+                                    <input type="text" id="lovedName" class="form-input" value="Baké" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-venus-mars"></i> Genre
+                                    </label>
+                                    <select id="lovedGender" class="form-select">
+                                        <option value="homme">Homme</option>
+                                        <option value="femme" selected>Femme</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Date spéciale</label>
-                        <input type="date" id="specialDate" value="2026-02-14">
-                    </div>
-                    <div class="form-group">
-                        <label>Souvenir</label>
-                        <input type="text" id="favoriteMemory" value="Notre premier regard">
-                    </div>
-                </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    <i class="fas fa-pen-fancy"></i> Message personnel
+                                </label>
+                                <textarea id="deepMessage" class="form-textarea" rows="6" required>Mon amour pour toi est infini, comme les étoiles dans le ciel. Chaque jour à tes côtés est un cadeau précieux.
 
-                <div class="form-group">
-                    <label>Photo</label>
-                    <div class="upload-area" id="uploadArea">
-                        <input type="file" id="photoUpload" accept="image/*" hidden>
-                        <div class="upload-content">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Cliquez pour ajouter une photo</p>
+Je me souviens de notre première rencontre, de ton sourire qui a illuminé ma vie. Depuis ce jour, mon cœur n'appartient qu'à toi.
+
+Les moments passés ensemble sont les plus beaux de mon existence. Ta douceur, ta gentillesse, ta beauté intérieure et extérieure me rendent chaque jour plus amoureux.
+
+Je t'aime plus que tout au monde, et je veux passer le reste de ma vie à te le prouver.</textarea>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-calendar"></i> Date spéciale
+                                    </label>
+                                    <input type="date" id="specialDate" class="form-input" value="2026-02-14">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-camera"></i> Souvenir
+                                    </label>
+                                    <input type="text" id="favoriteMemory" class="form-input" value="Notre premier regard">
+                                </div>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label class="form-label">
+                                    <i class="fas fa-image"></i> Photo du couple
+                                </label>
+                                <div class="upload-area" id="uploadArea">
+                                    <input type="file" id="photoUpload" accept="image/*" hidden>
+                                    <div class="upload-content">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                        <p>Glissez votre photo ou <span>cliquez</span></p>
+                                        <small>Toni & Baké</small>
+                                    </div>
+                                    <div class="upload-preview" id="uploadPreview"></div>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="generate-btn" id="generateBtn">
+                                <span>Générer la lettre</span>
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- DOCUMENT MULTIPAGES -->
+                    <div class="preview-container" id="preview">
+                        <div class="preview-header">
+                            <h3>Votre document</h3>
+                            <button class="download-btn" id="downloadBtn">
+                                <i class="fas fa-download"></i> Télécharger PDF
+                            </button>
                         </div>
-                        <div class="upload-preview" id="uploadPreview"></div>
-                    </div>
-                </div>
 
-                <button type="submit" class="btn-generate">Générer la lettre</button>
-            </form>
-        </section>
+                        <div class="document-card" id="loveCard">
+                            <!-- PAGE 1 - COUVERTURE -->
+                            <div class="document-page cover-page" id="page1">
+                                <div class="cover-heart">❤️</div>
+                                <h1 class="cover-title">Lettre d'Amour</h1>
+                                <div class="cover-names">
+                                    <span id="coverAuthorName">Toni</span>
+                                    <span class="cover-amp">&</span>
+                                    <span id="coverLovedName">Baké</span>
+                                </div>
+                                <div class="cover-date" id="coverDate">14 Février 2026</div>
+                            </div>
 
-        <!-- Section Carte -->
-        <section class="card-section" id="preview">
-            <h2>Votre carte</h2>
-            <button class="btn-download" id="downloadBtn">
-                <i class="fas fa-download"></i> Télécharger
-            </button>
+                            <!-- PAGE 2 - PHOTO ET NOMS -->
+                            <div class="document-page photo-page" id="page2">
+                                <div class="photo-frame-large">
+                                    <div class="photo-placeholder-large" id="docPhotoPlaceholderLarge">
+                                        <i class="fas fa-heart"></i>
+                                        <span>Notre photo</span>
+                                    </div>
+                                    <img id="docPhotoLarge" class="doc-photo-large hidden" alt="Photo">
+                                </div>
+                                <div class="names-large">
+                                    <span id="docAuthorNameLarge">Toni</span>
+                                    <span class="names-amp">&</span>
+                                    <span id="docLovedNameLarge">Baké</span>
+                                </div>
+                                <div class="memory-large" id="docMemoryLarge">
+                                    <i class="fas fa-star"></i> Notre premier regard
+                                </div>
+                            </div>
 
-            <!-- Carte format carré -->
-            <div class="love-card" id="loveCard">
-                <!-- En-tête avec photo et noms -->
-                <div class="card-header">
-                    <div class="card-photo">
-                        <div class="photo-placeholder" id="photoPlaceholder">
-                            <i class="fas fa-heart"></i>
-                            <span>Toni & Baké</span>
+                            <!-- PAGE 3 - ACROSTICHE -->
+                            <div class="document-page acrostiche-page" id="page3">
+                                <h2 class="page-title-large">Pour toi, <span id="acrosticheLovedNameLarge">Baké</span></h2>
+                                <div class="acrostiche-container-large" id="acrosticheContainerLarge"></div>
+                            </div>
+
+                            <!-- PAGE 4 - MESSAGE PERSONNEL -->
+                            <div class="document-page message-page" id="page4">
+                                <h2 class="page-title-large">Ce que je ressens</h2>
+                                <div class="message-content-large" id="docMessageDisplayLarge">
+                                    Mon amour pour toi est infini...
+                                </div>
+                            </div>
+
+                            <!-- PAGE 5 - CONCLUSION -->
+                            <div class="document-page conclusion-page" id="page5">
+                                <div class="quote-large">
+                                    <i class="fas fa-quote-left"></i>
+                                    <p id="docLoveLoveLarge">L'amour est l'infini à portée de cœur</p>
+                                    <i class="fas fa-quote-right"></i>
+                                </div>
+                                <div class="signature-large">
+                                    <p>Avec tout mon amour,</p>
+                                    <p class="signature-name-large" id="signatureNameLarge">Toni</p>
+                                </div>
+                                <div class="date-large">
+                                    <i class="fas fa-calendar-alt"></i> Le <span id="docDateLarge">14 février 2026</span>
+                                </div>
+                            </div>
                         </div>
-                        <img id="cardPhoto" class="hidden" alt="Photo">
-                    </div>
-                    
-                    <div class="card-names">
-                        <span id="authorNameDisplay">Toni</span>
-                        <span class="separator">&</span>
-                        <span id="lovedNameDisplay">Baké</span>
-                    </div>
-                    
-                    <div class="card-date" id="cardDateDisplay">
-                        14 Février 2026
-                    </div>
-                </div>
-
-                <!-- Corps de la carte -->
-                <div class="card-body">
-                    <!-- Acrostiche (lettre + phrase sur la même ligne) -->
-                    <div class="acrostiche" id="acrosticheContainer"></div>
-                    
-                    <!-- Message personnel -->
-                    <div class="message">
-                        <div class="message-title">Ce que je ressens</div>
-                        <div class="message-text" id="personalMessageDisplay">
-                            Mon amour pour toi est infini...
-                        </div>
-                    </div>
-                    
-                    <!-- Souvenir -->
-                    <div class="souvenir" id="memorySection">
-                        <i class="fas fa-star"></i>
-                        <span id="memoryDisplay">Notre premier regard</span>
-                    </div>
-                    
-                    <!-- Love Love -->
-                    <div class="love-love">
-                        <span class="love-icon">∞</span>
-                        <span class="love-text" id="loveLoveDisplay">
-                            L'amour est l'infini à portée de cœur
-                        </span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Footer -->
-        <footer>
-            <p>Fait avec ❤️ pour Toni & Baké · 2026</p>
+        <footer class="footer">
+            <p>Fait avec 💝 par Orace ATTINMAWASSONOU, Développeur Web · Saint-Valentin 2026</p>
         </footer>
     </main>
 
     <!-- Modals -->
-    <div class="modal" id="loaderModal">
-        <div class="modal-content">
+    <div class="modal-loader" id="loaderModal">
+        <div class="loader-content">
             <div class="spinner"></div>
             <p>Création de votre lettre...</p>
         </div>
     </div>
 
-    <div class="modal" id="successModal">
-        <div class="modal-content">
+    <div class="modal-success" id="successModal">
+        <div class="success-content">
             <i class="fas fa-heart"></i>
-            <p>Lettre créée avec succès !</p>
-            <button id="closeSuccessBtn">Super</button>
+            <h3>Lettre créée !</h3>
+            <button class="success-btn" id="closeSuccessModal">Magnifique</button>
         </div>
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="acrostiche-data.js"></script>
+    <script src="pdf-generator.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

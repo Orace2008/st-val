@@ -1,288 +1,408 @@
 /**
- * APPLICATION LETTRE D'AMOUR
+ * L'ÉTERNELLE LETTRE - SCRIPT PRINCIPAL
+ * Saint-Valentin 2026
  */
 
-const App = {
-    // État
-    state: {
+const LoveLetterApp = (() => {
+    'use strict';
+
+    // État de l'application
+    const state = {
         authorName: 'Toni',
+        authorGender: 'homme',
         lovedName: 'Baké',
-        deepMessage: 'Mon amour pour toi est infini. Chaque jour à tes côtés est un cadeau précieux.',
-        favoriteMemory: 'Notre premier regard',
+        lovedGender: 'femme',
+        deepMessage: 'Mon amour pour toi est infini, comme les étoiles dans le ciel. Chaque jour à tes côtés est un cadeau précieux.\n\nJe me souviens de notre première rencontre, de ton sourire qui a illuminé ma vie. Depuis ce jour, mon cœur n\'appartient qu\'à toi.\n\nLes moments passés ensemble sont les plus beaux de mon existence. Ta douceur, ta gentillesse, ta beauté intérieure et extérieure me rendent chaque jour plus amoureux.\n\nJe t\'aime plus que tout au monde, et je veux passer le reste de ma vie à te le prouver.',
         specialDate: '2026-02-14',
-        photoPreview: null
-    },
+        favoriteMemory: 'Notre premier regard',
+        photoPreview: null,
+        loveLoveMessage: "L'amour est l'infini à portée de cœur"
+    };
 
     // Messages Love Love
-    loveMessages: [
+    const loveMessages = [
         "L'amour est l'infini à portée de cœur",
         "Je t'aime pour l'éternité",
         "Mon cœur est à toi pour toujours",
         "Tu es mon hier, aujourd'hui et demain",
-        "Notre amour est éternel"
-    ],
+        "Notre amour est éternel",
+        "Chaque instant avec toi est un cadeau",
+        "Toi et moi, pour la vie",
+        "L'amour est la plus belle des aventures",
+        "Mon amour pour toi grandit chaque jour",
+        "Tu es la plus belle personne de ma vie"
+    ];
 
-    // Banque de phrases pour acrostiche (lettre + phrase)
-    acrostichePhrases: {
-        'B': 'aissée de ta présence chaque jour',
-        'A': 'mour sincère et pur',
-        'K': 'érosène dans mon cœur',
-        'É': 'ternellement reconnaissant',
-        'R': 'ayon de soleil dans ma vie',
-        'O': 'xygène de mon cœur',
-        'N': 'otre histoire est unique',
-        'I': 'nstant précieux avec toi',
-        'S': 'ourire qui me fait fondre',
-        'T': 'endresse infinie',
-        'default': 'aime chaque instant avec toi'
-    },
+    // Éléments DOM
+    const DOM = {
+        // Formulaire
+        authorName: document.getElementById('authorName'),
+        authorGender: document.getElementById('authorGender'),
+        lovedName: document.getElementById('lovedName'),
+        lovedGender: document.getElementById('lovedGender'),
+        deepMessage: document.getElementById('deepMessage'),
+        specialDate: document.getElementById('specialDate'),
+        favoriteMemory: document.getElementById('favoriteMemory'),
+        uploadArea: document.getElementById('uploadArea'),
+        photoUpload: document.getElementById('photoUpload'),
+        uploadPreview: document.getElementById('uploadPreview'),
+        generateBtn: document.getElementById('generateBtn'),
+        
+        // Document - Page 1
+        coverAuthorName: document.getElementById('coverAuthorName'),
+        coverLovedName: document.getElementById('coverLovedName'),
+        coverDate: document.getElementById('coverDate'),
+        
+        // Document - Page 2
+        docAuthorNameLarge: document.getElementById('docAuthorNameLarge'),
+        docLovedNameLarge: document.getElementById('docLovedNameLarge'),
+        docMemoryLarge: document.getElementById('docMemoryLarge'),
+        docPhotoLarge: document.getElementById('docPhotoLarge'),
+        docPhotoPlaceholderLarge: document.getElementById('docPhotoPlaceholderLarge'),
+        
+        // Document - Page 3
+        acrosticheLovedNameLarge: document.getElementById('acrosticheLovedNameLarge'),
+        acrosticheContainerLarge: document.getElementById('acrosticheContainerLarge'),
+        
+        // Document - Page 4
+        docMessageDisplayLarge: document.getElementById('docMessageDisplayLarge'),
+        
+        // Document - Page 5
+        docLoveLoveLarge: document.getElementById('docLoveLoveLarge'),
+        signatureNameLarge: document.getElementById('signatureNameLarge'),
+        docDateLarge: document.getElementById('docDateLarge'),
+        
+        // Boutons
+        downloadBtn: document.getElementById('downloadBtn'),
+        mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+        nav: document.getElementById('nav'),
+        
+        // Modals
+        loaderModal: document.getElementById('loaderModal'),
+        successModal: document.getElementById('successModal'),
+        closeSuccessBtn: document.getElementById('closeSuccessModal'),
+        
+        // Autres
+        particles: document.getElementById('particles'),
+        floatingHearts: document.getElementById('floatingHearts'),
+        form: document.getElementById('loveForm')
+    };
 
     // Initialisation
-    init: function() {
-        console.log('Application démarrée');
-        this.cacheDOM();
-        this.bindEvents();
-        this.updateDisplays();
-        this.generateAcrostiche('BAKÉ');
+    const init = () => {
+        console.log('❤️ Application démarrée');
         
-        // Activer bouton téléchargement
-        if (this.downloadBtn) this.downloadBtn.disabled = false;
-    },
-
-    // Récupérer les éléments DOM
-    cacheDOM: function() {
-        this.authorName = document.getElementById('authorName');
-        this.lovedName = document.getElementById('lovedName');
-        this.deepMessage = document.getElementById('deepMessage');
-        this.favoriteMemory = document.getElementById('favoriteMemory');
-        this.specialDate = document.getElementById('specialDate');
-        this.uploadArea = document.getElementById('uploadArea');
-        this.photoUpload = document.getElementById('photoUpload');
-        this.uploadPreview = document.getElementById('uploadPreview');
-        this.authorNameDisplay = document.getElementById('authorNameDisplay');
-        this.lovedNameDisplay = document.getElementById('lovedNameDisplay');
-        this.cardDateDisplay = document.getElementById('cardDateDisplay');
-        this.acrosticheContainer = document.getElementById('acrosticheContainer');
-        this.personalMessageDisplay = document.getElementById('personalMessageDisplay');
-        this.memoryDisplay = document.getElementById('memoryDisplay');
-        this.memorySection = document.getElementById('memorySection');
-        this.loveLoveDisplay = document.getElementById('loveLoveDisplay');
-        this.cardPhoto = document.getElementById('cardPhoto');
-        this.photoPlaceholder = document.getElementById('photoPlaceholder');
-        this.downloadBtn = document.getElementById('downloadBtn');
-        this.loaderModal = document.getElementById('loaderModal');
-        this.successModal = document.getElementById('successModal');
-        this.closeSuccessBtn = document.getElementById('closeSuccessBtn');
-        this.form = document.getElementById('loveForm');
-    },
-
-    // Écouteurs d'événements
-    bindEvents: function() {
-        // Formulaire
-        if (this.authorName) {
-            this.authorName.addEventListener('input', (e) => {
-                this.state.authorName = e.target.value || 'Toni';
-                if (this.authorNameDisplay) this.authorNameDisplay.textContent = this.state.authorName;
-            });
-        }
-
-        if (this.lovedName) {
-            this.lovedName.addEventListener('input', (e) => {
-                this.state.lovedName = e.target.value || 'Baké';
-                if (this.lovedNameDisplay) this.lovedNameDisplay.textContent = this.state.lovedName;
-                this.generateAcrostiche(this.state.lovedName.toUpperCase());
-            });
-        }
-
-        if (this.deepMessage) {
-            this.deepMessage.addEventListener('input', (e) => {
-                this.state.deepMessage = e.target.value || '';
-                if (this.personalMessageDisplay) this.personalMessageDisplay.textContent = this.state.deepMessage;
-            });
-        }
-
-        if (this.favoriteMemory) {
-            this.favoriteMemory.addEventListener('input', (e) => {
-                this.state.favoriteMemory = e.target.value || '';
-                if (this.memoryDisplay) {
-                    if (this.state.favoriteMemory) {
-                        this.memoryDisplay.textContent = this.state.favoriteMemory;
-                        this.memorySection.style.display = 'block';
-                    } else {
-                        this.memorySection.style.display = 'none';
-                    }
-                }
-            });
-        }
-
-        if (this.specialDate) {
-            this.specialDate.addEventListener('change', (e) => {
-                this.state.specialDate = e.target.value;
-                this.updateDate();
-            });
-        }
-
-        // Upload photo
-        if (this.uploadArea && this.photoUpload) {
-            this.uploadArea.addEventListener('click', () => this.photoUpload.click());
-            this.uploadArea.addEventListener('dragover', (e) => e.preventDefault());
-            this.uploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                const file = e.dataTransfer.files[0];
-                if (file && file.type.startsWith('image/')) this.processImage(file);
-            });
-            this.photoUpload.addEventListener('change', (e) => {
-                const file = e.target.files[0];
-                if (file) this.processImage(file);
-            });
-        }
-
-        // Formulaire submit
-        if (this.form) {
-            this.form.addEventListener('submit', (e) => this.handleSubmit(e));
-        }
-
-        // Téléchargement
-        if (this.downloadBtn) {
-            this.downloadBtn.addEventListener('click', () => this.handleDownload());
-        }
-
-        // Fermer modal
-        if (this.closeSuccessBtn) {
-            this.closeSuccessBtn.addEventListener('click', () => {
-                this.successModal.classList.remove('active');
-            });
-        }
-    },
-
-    // Générer acrostiche (lettre + phrase sur la même ligne)
-    generateAcrostiche: function(name) {
-        if (!this.acrosticheContainer) return;
+        if (!checkElements()) return;
         
-        const letters = name.split('');
+        createFloatingHearts();
+        createParticles();
+        setupEventListeners();
+        
+        // Générer l'acrostiche initial
+        updateAcrostiche();
+        
+        // Mettre à jour tous les affichages
+        updateAllDisplays();
+    };
+
+    // Vérifier que tous les éléments existent
+    const checkElements = () => {
+        return true;
+    };
+
+    // Mettre à jour tous les affichages
+    const updateAllDisplays = () => {
+        // Page 1
+        if (DOM.coverAuthorName) DOM.coverAuthorName.textContent = state.authorName;
+        if (DOM.coverLovedName) DOM.coverLovedName.textContent = state.lovedName;
+        
+        // Page 2
+        if (DOM.docAuthorNameLarge) DOM.docAuthorNameLarge.textContent = state.authorName;
+        if (DOM.docLovedNameLarge) DOM.docLovedNameLarge.textContent = state.lovedName;
+        if (DOM.docMemoryLarge) DOM.docMemoryLarge.innerHTML = `<i class="fas fa-star"></i> ${state.favoriteMemory}`;
+        
+        // Page 3
+        if (DOM.acrosticheLovedNameLarge) DOM.acrosticheLovedNameLarge.textContent = state.lovedName;
+        
+        // Page 4
+        if (DOM.docMessageDisplayLarge) DOM.docMessageDisplayLarge.textContent = state.deepMessage;
+        
+        // Page 5
+        if (DOM.signatureNameLarge) DOM.signatureNameLarge.textContent = state.authorName;
+        if (DOM.docLoveLoveLarge) DOM.docLoveLoveLarge.textContent = state.loveLoveMessage;
+        
+        updateDateDisplay();
+    };
+
+    // Mettre à jour la date
+    const updateDateDisplay = () => {
+        if (!DOM.coverDate || !DOM.docDateLarge) return;
+        
+        if (state.specialDate) {
+            const date = new Date(state.specialDate);
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            const formattedDate = date.toLocaleDateString('fr-FR', options);
+            DOM.coverDate.textContent = formattedDate;
+            DOM.docDateLarge.textContent = formattedDate;
+        }
+    };
+
+    // Mettre à jour l'acrostiche
+    const updateAcrostiche = () => {
+        if (!DOM.acrosticheContainerLarge) return;
+        
+        const cleanName = state.lovedName
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toUpperCase();
+        
+        const letters = cleanName.split('');
         let html = '';
         
         letters.forEach((letter, index) => {
-            const phrase = this.acrostichePhrases[letter] || this.acrostichePhrases['default'];
-            
+            const phrase = AcrosticheData.getPhrase(letter, index, state.lovedGender);
             html += `
-                <div class="acrostiche-line">
-                    <span class="acrostiche-letter">${letter}</span>
-                    <span class="acrostiche-phrase">${phrase}</span>
+                <div class="acrostiche-line-large">
+                    <span class="acrostiche-letter-large">${letter}</span>
+                    <span class="acrostiche-phrase-large">${phrase}</span>
                 </div>
             `;
         });
         
-        this.acrosticheContainer.innerHTML = html;
-    },
+        DOM.acrosticheContainerLarge.innerHTML = html;
+    };
 
-    // Mettre à jour la date
-    updateDate: function() {
-        if (!this.cardDateDisplay) return;
-        
-        if (this.state.specialDate) {
-            const date = new Date(this.state.specialDate);
-            const options = { day: 'numeric', month: 'long', year: 'numeric' };
-            this.cardDateDisplay.textContent = date.toLocaleDateString('fr-FR', options);
+    // Gestionnaires d'événements
+    const setupEventListeners = () => {
+        // Input en temps réel
+        if (DOM.authorName) {
+            DOM.authorName.addEventListener('input', (e) => {
+                state.authorName = e.target.value || 'Toni';
+                if (DOM.coverAuthorName) DOM.coverAuthorName.textContent = state.authorName;
+                if (DOM.docAuthorNameLarge) DOM.docAuthorNameLarge.textContent = state.authorName;
+                if (DOM.signatureNameLarge) DOM.signatureNameLarge.textContent = state.authorName;
+            });
         }
-    },
-
-    // Mettre à jour les affichages
-    updateDisplays: function() {
-        if (this.authorNameDisplay) this.authorNameDisplay.textContent = this.state.authorName;
-        if (this.lovedNameDisplay) this.lovedNameDisplay.textContent = this.state.lovedName;
-        if (this.personalMessageDisplay) this.personalMessageDisplay.textContent = this.state.deepMessage;
-        if (this.memoryDisplay) this.memoryDisplay.textContent = this.state.favoriteMemory;
-        this.updateDate();
         
-        // Message Love Love aléatoire
-        if (this.loveLoveDisplay) {
-            const randomIndex = Math.floor(Math.random() * this.loveMessages.length);
-            this.loveLoveDisplay.textContent = this.loveMessages[randomIndex];
+        if (DOM.lovedName) {
+            DOM.lovedName.addEventListener('input', (e) => {
+                state.lovedName = e.target.value || 'Baké';
+                if (DOM.coverLovedName) DOM.coverLovedName.textContent = state.lovedName;
+                if (DOM.docLovedNameLarge) DOM.docLovedNameLarge.textContent = state.lovedName;
+                if (DOM.acrosticheLovedNameLarge) DOM.acrosticheLovedNameLarge.textContent = state.lovedName;
+                updateAcrostiche();
+            });
         }
-    },
+        
+        if (DOM.lovedGender) {
+            DOM.lovedGender.addEventListener('change', () => {
+                state.lovedGender = DOM.lovedGender.value;
+                updateAcrostiche();
+            });
+        }
+        
+        if (DOM.deepMessage) {
+            DOM.deepMessage.addEventListener('input', (e) => {
+                state.deepMessage = e.target.value || '';
+                if (DOM.docMessageDisplayLarge) DOM.docMessageDisplayLarge.textContent = state.deepMessage;
+            });
+        }
+        
+        if (DOM.favoriteMemory) {
+            DOM.favoriteMemory.addEventListener('input', (e) => {
+                state.favoriteMemory = e.target.value || '';
+                if (DOM.docMemoryLarge) DOM.docMemoryLarge.innerHTML = `<i class="fas fa-star"></i> ${state.favoriteMemory}`;
+            });
+        }
+        
+        if (DOM.specialDate) {
+            DOM.specialDate.addEventListener('change', (e) => {
+                state.specialDate = e.target.value;
+                updateDateDisplay();
+            });
+        }
+        
+        // Upload photo
+        if (DOM.uploadArea && DOM.photoUpload) {
+            DOM.uploadArea.addEventListener('click', () => DOM.photoUpload.click());
+            DOM.uploadArea.addEventListener('dragover', (e) => e.preventDefault());
+            DOM.uploadArea.addEventListener('drop', handleDrop);
+            DOM.photoUpload.addEventListener('change', handleFileSelect);
+        }
+        
+        // Formulaire submit
+        if (DOM.form) {
+            DOM.form.addEventListener('submit', handleFormSubmit);
+        }
+        
+        // Bouton télécharger
+        if (DOM.downloadBtn) {
+            DOM.downloadBtn.addEventListener('click', handleDownload);
+        }
+        
+        // Menu mobile
+        if (DOM.mobileMenuBtn && DOM.nav) {
+            DOM.mobileMenuBtn.addEventListener('click', () => {
+                DOM.nav.classList.toggle('active');
+            });
+        }
+        
+        // Fermer les modals
+        if (DOM.closeSuccessBtn) {
+            DOM.closeSuccessBtn.addEventListener('click', () => {
+                DOM.successModal.classList.remove('active');
+            });
+        }
+        
+        // Fermer le menu mobile
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (DOM.nav) DOM.nav.classList.remove('active');
+            });
+        });
+        
+        // Scroll vers aperçu
+        document.querySelectorAll('a[href="#preview"]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('preview').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    };
 
-    // Traitement image
-    processImage: function(file) {
+    // Gestionnaires d'upload
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            processImage(file);
+        }
+    };
+
+    const handleFileSelect = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            processImage(file);
+        }
+    };
+
+    const processImage = (file) => {
         const reader = new FileReader();
         reader.onload = (e) => {
-            this.state.photoPreview = e.target.result;
+            state.photoPreview = e.target.result;
             
-            if (this.uploadPreview) {
-                this.uploadPreview.innerHTML = `<img src="${this.state.photoPreview}" alt="Preview">`;
-                this.uploadArea.classList.add('has-image');
+            // Prévisualisation
+            if (DOM.uploadPreview) {
+                DOM.uploadPreview.innerHTML = `<img src="${state.photoPreview}" alt="Preview">`;
+                DOM.uploadArea.classList.add('has-image');
             }
             
-            if (this.cardPhoto) {
-                this.cardPhoto.src = this.state.photoPreview;
-                this.cardPhoto.classList.remove('hidden');
+            // Grande photo
+            if (DOM.docPhotoLarge) {
+                DOM.docPhotoLarge.src = state.photoPreview;
+                DOM.docPhotoLarge.classList.remove('hidden');
             }
             
-            if (this.photoPlaceholder) {
-                this.photoPlaceholder.classList.add('hidden');
+            if (DOM.docPhotoPlaceholderLarge) {
+                DOM.docPhotoPlaceholderLarge.classList.add('hidden');
             }
         };
         reader.readAsDataURL(file);
-    },
+    };
 
-    // Soumission formulaire
-    handleSubmit: function(e) {
+    // Soumission du formulaire
+    const handleFormSubmit = (e) => {
         e.preventDefault();
         
-        if (this.loaderModal) this.loaderModal.classList.add('active');
+        if (DOM.loaderModal) DOM.loaderModal.classList.add('active');
         
         setTimeout(() => {
-            if (this.loaderModal) this.loaderModal.classList.remove('active');
+            if (DOM.loaderModal) DOM.loaderModal.classList.remove('active');
+            
+            // Changer le message love love
+            const randomIndex = Math.floor(Math.random() * loveMessages.length);
+            state.loveLoveMessage = loveMessages[randomIndex];
+            if (DOM.docLoveLoveLarge) DOM.docLoveLoveLarge.textContent = state.loveLoveMessage;
+            
+            if (DOM.successModal) DOM.successModal.classList.add('active');
+            createConfetti();
+            
+        }, 1500);
+    };
+
+    // Téléchargement PDF
+    const handleDownload = async () => {
+        try {
+            if (DOM.loaderModal) DOM.loaderModal.classList.add('active');
             
             // Mettre à jour l'acrostiche
-            this.generateAcrostiche(this.state.lovedName.toUpperCase());
+            updateAcrostiche();
             
-            // Nouveau message Love Love
-            if (this.loveLoveDisplay) {
-                const randomIndex = Math.floor(Math.random() * this.loveMessages.length);
-                this.loveLoveDisplay.textContent = this.loveMessages[randomIndex];
-            }
+            // Attendre que le DOM soit mis à jour
+            await new Promise(resolve => setTimeout(resolve, 200));
             
-            if (this.successModal) this.successModal.classList.add('active');
-            this.createConfetti();
-        }, 1500);
-    },
-
-    // Téléchargement
-    handleDownload: async function() {
-        const card = document.getElementById('loveCard');
-        if (!card) return;
-        
-        try {
-            if (this.loaderModal) this.loaderModal.classList.add('active');
+            // Générer le PDF
+            const filename = `lettre-${state.authorName}-${state.lovedName}-2026.pdf`;
+            await PDFGenerator.generatePDF(filename);
             
-            if (typeof html2canvas === 'undefined') {
-                throw new Error('html2canvas non chargé');
-            }
-            
-            const canvas = await html2canvas(card, {
-                scale: 2,
-                backgroundColor: '#ffffff'
-            });
-            
-            const link = document.createElement('a');
-            link.download = `lettre-${this.state.authorName}-${this.state.lovedName}.png`;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            
-            if (this.loaderModal) this.loaderModal.classList.remove('active');
-            this.createConfetti();
+            if (DOM.loaderModal) DOM.loaderModal.classList.remove('active');
+            createConfetti();
             
         } catch (error) {
-            console.error('Erreur:', error);
-            if (this.loaderModal) this.loaderModal.classList.remove('active');
-            alert('Faites une capture d\'écran de la carte');
+            console.error('Erreur PDF:', error);
+            if (DOM.loaderModal) DOM.loaderModal.classList.remove('active');
+            alert('Erreur lors de la génération du PDF');
         }
-    },
+    };
 
-    // Confettis
-    createConfetti: function() {
+    // Création des particules
+    const createParticles = () => {
+        if (!DOM.particles) return;
+        
         for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.style.cssText = `
+                position: absolute;
+                width: ${Math.random() * 3}px;
+                height: ${Math.random() * 3}px;
+                background: rgba(255, 138, 159, ${Math.random() * 0.3});
+                border-radius: 50%;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation: float ${5 + Math.random() * 10}s linear infinite;
+                pointer-events: none;
+            `;
+            DOM.particles.appendChild(particle);
+        }
+    };
+
+    // Création des cœurs flottants
+    const createFloatingHearts = () => {
+        if (!DOM.floatingHearts) return;
+        
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.cssText = `
+                position: absolute;
+                left: ${Math.random() * 100}%;
+                top: 110%;
+                font-size: ${10 + Math.random() * 20}px;
+                opacity: ${0.1 + Math.random() * 0.2};
+                animation: float ${5 + Math.random() * 10}s linear infinite;
+                pointer-events: none;
+                z-index: -1;
+            `;
+            DOM.floatingHearts.appendChild(heart);
+            setTimeout(() => heart.remove(), 15000);
+        }, 3000);
+    };
+
+    // Création des confettis
+    const createConfetti = () => {
+        const colors = ['#E63946', '#FF8A9F', '#FFB347', '#2A9D8F', '#FFD700'];
+        
+        for (let i = 0; i < 50; i++) {
             const confetti = document.createElement('div');
             confetti.style.cssText = `
                 position: fixed;
@@ -290,32 +410,23 @@ const App = {
                 top: -10%;
                 width: ${5 + Math.random() * 8}px;
                 height: ${5 + Math.random() * 8}px;
-                background: hsl(${Math.random() * 360}, 80%, 60%);
-                opacity: 0.7;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                opacity: ${0.5 + Math.random() * 0.5};
                 transform: rotate(${Math.random() * 360}deg);
                 animation: confetti ${2 + Math.random() * 2}s ease-out forwards;
                 pointer-events: none;
                 z-index: 9999;
+                border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
             `;
             document.body.appendChild(confetti);
             setTimeout(() => confetti.remove(), 4000);
         }
-    }
-};
+    };
 
-// Animation confetti
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes confetti {
-        to {
-            transform: translateY(100vh) rotate(720deg);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
+    return { init };
+})();
 
-// Démarrage
+// Démarrer l'application
 document.addEventListener('DOMContentLoaded', () => {
-    App.init();
+    LoveLetterApp.init();
 });
